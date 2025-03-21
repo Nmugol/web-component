@@ -1,0 +1,8 @@
+{
+    "loggedIn": false,
+    "data": {
+        "flagapracownik": "0",
+        "flagastudent": "0",
+        "permission": "public-procurement"
+    }
+}
