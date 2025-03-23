@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
 import r2wc from "@r2wc/react-to-web-component";
+import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, Collapse, Typography, Button, Box } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Navigation = ({ isAuthenticated }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -14,16 +19,21 @@ const Navigation = ({ isAuthenticated }) => {
   const fetchMenuData = async () => {
     try {
       const response = await fetch("https://unispace.pbs.edu.pl/api/cms/menu/slug/menu-glowne");
+      
       if (!response.ok) throw new Error("Nie udało się pobrać danych.");
+      
       const data = await response.json();
+      
       if (Array.isArray(data.menuItems)) setMenuLinks(data.menuItems);
+      
       else throw new Error("Brak menuItems w odpowiedzi.");
-    } catch (error) {
+    } 
+    catch (error){
       setError(error.message);
     }
   };
 
-  const toggleDrawer = (open) => setDrawerOpen(open);
+  const toggleDrawer = () => setDrawerOpen((prev) => !prev);
 
   const handleSubmenuToggle = (path) => {
     setExpandedMenus((prev) => ({
@@ -33,50 +43,69 @@ const Navigation = ({ isAuthenticated }) => {
   };
 
   const renderMenu = (items, parentPath = "") => (
-    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+    <List>
       {items.map((item, index) => {
         const currentPath = `${parentPath}${index}`;
         return (
-          <li key={currentPath}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <a href={item.url} style={{ fontSize: "18px", textDecoration: "none" }}>{item.name}</a>
-              {item.children?.length > 0 && (
-                <button onClick={() => handleSubmenuToggle(currentPath)} style={{ fontSize: "18px" }}>
-                  {expandedMenus[currentPath] ? "▲" : "▼"}
-                </button>
-              )}
-            </div>
-            {item.children?.length > 0 && expandedMenus[currentPath] && (
-              <div style={{ paddingLeft: "20px" }}>
-                {renderMenu(item.children, `${currentPath}-`)}
-              </div>
+          <React.Fragment key={currentPath}>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => item.children?.length > 0 && handleSubmenuToggle(currentPath)}>
+                <ListItemText primary={item.name} sx={{ whiteSpace: "nowrap" }} />
+                {item.children?.length > 0 ? (
+                  expandedMenus[currentPath] ? <ExpandLess /> : <ExpandMore />
+                ) : null}
+              </ListItemButton>
+            </ListItem>
+            {item.children?.length > 0 && (
+              <Collapse in={expandedMenus[currentPath]} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding sx={{ pl: 4 }}>
+                  {renderMenu(item.children, `${currentPath}-`)}
+                </List>
+              </Collapse>
             )}
-          </li>
+          </React.Fragment>
         );
       })}
-    </ul>
+    </List>
   );
 
   return (
-    <div>
-      <header style={{ backgroundColor: "#3f51b5", padding: "10px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <button onClick={() => toggleDrawer(true)} style={{ fontSize: "16px", color: "white" }}>Menu</button>
-        <h1 style={{ color: "white" }}>My App</h1>
-        {isAuthenticated ? <button style={{ fontSize: "16px" }}>Logout</button> : <button style={{ fontSize: "16px" }}>Login</button>}
-      </header>
+    <Box sx={{ display: "flex" }}>
+      <AppBar position="fixed" sx={{ width: "100vw", zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer}>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            My App
+          </Typography>
+          {isAuthenticated ? <Button color="inherit">Logout</Button> : <Button color="inherit">Login</Button>}
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        open={drawerOpen}
+        sx={{
+          width: drawerOpen ? 250 : 0,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerOpen ? 250 : 0,
+            transition: 'width 0.3s',
+            overflowX: 'hidden',
+            marginTop: "64px", // Aby Drawer był pod AppBar
+            
+          },
+        }}
+      >
 
-      {error && <div style={{ color: "red", padding: "10px" }}>Błąd: {error}</div>}
-
-      {drawerOpen && (
-        <nav style={{ position: "fixed", top: 0, left: 0, width: "250px", height: "100%", backgroundColor: "#fff", boxShadow: "2px 0 5px rgba(0, 0, 0, 0.3)", padding: "20px", zIndex: 100 }}>
-          <button onClick={() => toggleDrawer(false)} style={{ fontSize: "20px", position: "absolute", top: "10px", right: "10px" }}>Close</button>
-          {renderMenu(menuLinks)}
-        </nav>
-      )}
-    </div>
+        {renderMenu(menuLinks)}
+      </Drawer>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "64px" }}>
+        {error && <Typography color="error">Błąd: {error}</Typography>}
+      </Box>
+    </Box>
   );
 };
 
-// Konwersja do Web Component
 const NavigationWebComponent = r2wc(Navigation, { props: { isAuthenticated: "string" } });
 customElements.define("navigation-web", NavigationWebComponent);
