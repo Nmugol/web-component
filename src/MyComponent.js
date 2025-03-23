@@ -50,7 +50,7 @@ const Navigation = ({ isAuthenticated }) => {
           <React.Fragment key={currentPath}>
             <ListItem disablePadding>
               <ListItemButton onClick={() => item.children?.length > 0 && handleSubmenuToggle(currentPath)}>
-                <ListItemText primary={item.name} sx={{ whiteSpace: "nowrap" }} />
+                <ListItemText primary={item.name}/>
                 {item.children?.length > 0 ? (
                   expandedMenus[currentPath] ? <ExpandLess /> : <ExpandMore />
                 ) : null}
@@ -83,21 +83,11 @@ const Navigation = ({ isAuthenticated }) => {
         </Toolbar>
       </AppBar>
       <Drawer
-        variant="permanent"
         open={drawerOpen}
         sx={{
-          width: drawerOpen ? 250 : 0,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerOpen ? 250 : 0,
-            transition: 'width 0.3s',
-            overflowX: 'hidden',
-            marginTop: "64px", // Aby Drawer był pod AppBar
-            
-          },
+          mt: "64px",
         }}
       >
-
         {renderMenu(menuLinks)}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "64px" }}>
