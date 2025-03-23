@@ -1,9 +1,6 @@
 {
     "loggedIn": true,
     "data": {
-        "sub": "e4d27414-7c82-4ef7-9513-3620fd809930",
-        "uid": "hanwoj003",
-        "usosId": "44006",
         "resource_access": {
             "erp-provider": [
                 "READ_SUPPLIER",
@@ -51,10 +48,6 @@
             ]
         },
         "flagastudent": "1",
-        "name": "Hanna Wójcicka",
-        "guid": "72046A59-DFA1-4B2F-B02B-CB1AB45BACF2",
-        "flagapracownik": "1",
-        "firstName": "Hanna",
-        "lastName": "Wójcicka"
+        "flagapracownik": "1"
     }
 }
