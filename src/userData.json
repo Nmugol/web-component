@@ -1,0 +1,60 @@
+{
+    "loggedIn": true,
+    "data": {
+        "sub": "e4d27414-7c82-4ef7-9513-3620fd809930",
+        "uid": "hanwoj003",
+        "usosId": "44006",
+        "resource_access": {
+            "erp-provider": [
+                "READ_SUPPLIER",
+                "READ_INVOICE_DICT"
+            ],
+            "search-provider": [
+                "READ_EMPLOYEE_GUID",
+                "READ_EMPLOYEE_AGREEMENT",
+                "READ_EMPLOYEE",
+                "READ_EMPLOYEE_ADDRESS",
+                "READ_EMPLOYEE_PESEL"
+            ],
+            "public-procurement": [
+                "EDIT_AUCTION",
+                "DELETE_AUCTION",
+                "REVERT_PROCUREMENT",
+                "EDIT_PROCUREMENT",
+                "GENERATE_REPORTS",
+                "ADD_AUCTION",
+                "FILE_SET_TEMP",
+                "Podgląd wszystkich zamówień",
+                "SEE_ALL_PROCUREMENTS",
+                "ADMIN_EDIT_PROCUREMENT",
+                "CANCEL_PROCESS",
+                "FILE_AUCTION_DELETE",
+                "FILE_AUCTION_REPLACE",
+                "PROCURATOR_EDIT_PROCUREMENT",
+                "ADD_PROCUREMENT",
+                "CPV_RESET",
+                "CHANGE_DECISION_PERSON",
+                "FILE_DELETE",
+                "Admin",
+                "SET_TYPE_CATEGORIES",
+                "NEXT_STEP",
+                "SET_EXCHANGE_RATE",
+                "CPV_BLOCK",
+                "Podgląd zamówień do rozliczenia",
+                "Podgląd zamówień tworzonych w dziale",
+                "BACK_PROCESS"
+            ],
+            "document-service": [
+                "Administrator",
+                "INVOICE_ACCESS",
+                "INVOICE_FILE"
+            ]
+        },
+        "flagastudent": "1",
+        "name": "Hanna Wójcicka",
+        "guid": "72046A59-DFA1-4B2F-B02B-CB1AB45BACF2",
+        "flagapracownik": "1",
+        "firstName": "Hanna",
+        "lastName": "Wójcicka"
+    }
+}
