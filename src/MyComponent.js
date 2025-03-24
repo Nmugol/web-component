@@ -69,16 +69,14 @@ const renderMenu = (items, parentPath = "") => {
 const showMenuItem = (
   (!item.requiredLoggedIn || isUserLoggedIn) &&
   (
-    // Sprawdzenie dla konkretnego elementu
-    (item.name === "Księga identyfikacji wizualnej" ? (
-      // Jeśli nazwa to "Księga identyfikacji wizualnej", sprawdzamy flagi pracownika i studenta
-      (item.employeeFlag === null || item.employeeFlag.includes(Number(userData?.data?.flagapracownik))) ||
-      (item.studentFlag === null || item.studentFlag.includes(Number(userData?.data?.flagastudent)))
-    ) : (
-      // Dla innych elementów menu, sprawdzamy obie flagi
-      (item.employeeFlag === null || item.employeeFlag.includes(Number(userData?.data?.flagapracownik))) &&
-      (item.studentFlag === null || item.studentFlag.includes(Number(userData?.data?.flagastudent)))
-    ))
+    (!item.employeeFlag?.includes(Number(userData?.data?.flagapracownik)) &&
+     item.studentFlag?.includes(Number(userData?.data?.flagastudent))) ||
+
+    (item.employeeFlag?.includes(Number(userData?.data?.flagapracownik)) &&
+     !item.studentFlag?.includes(Number(userData?.data?.flagastudent))) ||
+
+    ((item.employeeFlag == null || item.employeeFlag?.includes(Number(userData?.data?.flagapracownik))) &&
+     (item.studentFlag == null || item.studentFlag?.includes(Number(userData?.data?.flagastudent))))
   ) &&
   hasPermission(item.permission)
 );
